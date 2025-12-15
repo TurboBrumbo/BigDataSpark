@@ -1,0 +1,52 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: bigdata_pg
+    environment:
+      POSTGRES_DB: bigdataSpark
+      POSTGRES_USER: bigdata
+      POSTGRES_PASSWORD: bddb
+    ports:
+      - "5433:5432"
+    volumes:
+      - ./postgres:/docker-entrypoint-initdb.d
+      - ./data:/data:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bigdata -d bigdata"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:24.8
+    container_name: bigdata_ch
+    environment:
+      - CLICKHOUSE_DB=marts
+      - CLICKHOUSE_USER=spark
+      - CLICKHOUSE_PASSWORD=spark
+    ports:
+      - "8123:8123"
+      - "9000:9000"
+    volumes:
+      - ./clickhouse:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "clickhouse-client", "--query", "SELECT 1"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+
+  spark:
+    image: jupyter/pyspark-notebook:latest
+    container_name: bigdata_spark
+    environment:
+      - PYSPARK_PYTHON=python
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./spark/jobs:/home/jovyan/work/jobs
+      - ./spark/jars:/home/jovyan/work/jars
+    depends_on:
+      postgres:
+        condition: service_healthy
+      clickhouse:
+        condition: service_healthy

@@ -1,0 +1,62 @@
+CREATE SCHEMA IF NOT EXISTS stg;
+
+DROP TABLE IF EXISTS stg.mock_data;
+
+CREATE TABLE stg.mock_data (
+  id                    int,
+  customer_first_name   text,
+  customer_last_name    text,
+  customer_age          int,
+  customer_email        text,
+  customer_country      text,
+  customer_postal_code  text,
+  customer_pet_type     text,
+  customer_pet_name     text,
+  customer_pet_breed    text,
+
+  seller_first_name     text,
+  seller_last_name      text,
+  seller_email          text,
+  seller_country        text,
+  seller_postal_code    text,
+
+  product_name          text,
+  product_category      text,
+  product_price         numeric(12,2),
+  product_quantity      int,
+
+  sale_date             text,
+  sale_customer_id      int,
+  sale_seller_id        int,
+  sale_product_id       int,
+  sale_quantity         int,
+  sale_total_price      numeric(12,2),
+
+  store_name            text,
+  store_location        text,
+  store_city            text,
+  store_state           text,
+  store_country         text,
+  store_phone           text,
+  store_email           text,
+
+  pet_category          text,
+  product_weight        numeric(12,3),
+  product_color         text,
+  product_size          text,
+  product_brand         text,
+  product_material      text,
+  product_description   text,
+  product_rating        numeric(3,2),
+  product_reviews       int,
+  product_release_date  text,
+  product_expiry_date   text,
+
+  supplier_name         text,
+  supplier_contact      text,
+  supplier_email        text,
+  supplier_phone        text,
+  supplier_address      text,
+  supplier_city         text,
+  supplier_country      text
+);
